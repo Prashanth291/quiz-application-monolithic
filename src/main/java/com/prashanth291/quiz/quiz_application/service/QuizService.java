@@ -1,0 +1,59 @@
+package com.prashanth291.quiz.quiz_application.service;
+
+import com.prashanth291.quiz.quiz_application.model.Question;
+import com.prashanth291.quiz.quiz_application.model.QuestionWrapper;
+import com.prashanth291.quiz.quiz_application.model.Quiz;
+import com.prashanth291.quiz.quiz_application.repository.QuestionRepository;
+import com.prashanth291.quiz.quiz_application.repository.QuizRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class QuizService {
+
+    @Autowired
+    private QuizRepository quizRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    public ResponseEntity<String> createQuiz(String category, int numQues, String title)
+    {
+        try{
+            List<Question> questions = questionRepository.findRandomQuestionsByCategory(category,numQues);
+            Quiz quiz = new Quiz();
+            quiz.setTitle(title);
+            quiz.setQuestions(questions);
+            quizRepository.save(quiz);
+            return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Failed to Create Quiz",HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<List<QuestionWrapper>> getQuizById(int id) {
+        try{
+            Optional<Quiz> quiz = quizRepository.findById(id);
+            List<Question> questionsFromDB = quiz.get().getQuestions();
+            List<QuestionWrapper> wrappedQuestions = new ArrayList<>();
+            for(Question question:questionsFromDB)
+            {
+                wrappedQuestions.add(new QuestionWrapper(
+                        question.getId(),question.getQuestion_title(),question.getOption1(), question.getOption2(),
+                        question.getOption3(),question.getOption4()));
+            }
+            return new ResponseEntity<>(wrappedQuestions, HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NOT_FOUND);
+    }
+}
