@@ -48,4 +48,10 @@ public class QuestionController {
     {
         return serv.updateQuestion(ques);
     }
+
+    @GetMapping("/category/{category}")
+    public List<Question> getQuestionsByCategory(@PathVariable String category)
+    {
+        return serv.getQuestionsByCategory(category);
+    }
 }

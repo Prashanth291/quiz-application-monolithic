@@ -33,4 +33,8 @@ public class QuestionService {
     public Question updateQuestion(Question ques) {
         return repo.save(ques);
     }
+
+    public List<Question> getQuestionsByCategory(String cat) { 
+        return repo.findAllByCategory(cat);
+    }
 }
