@@ -3,6 +3,7 @@ package com.prashanth291.quiz.quiz_application.service;
 import com.prashanth291.quiz.quiz_application.model.Question;
 import com.prashanth291.quiz.quiz_application.model.QuestionWrapper;
 import com.prashanth291.quiz.quiz_application.model.Quiz;
+import com.prashanth291.quiz.quiz_application.model.QuizResponse;
 import com.prashanth291.quiz.quiz_application.repository.QuestionRepository;
 import com.prashanth291.quiz.quiz_application.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,25 @@ public class QuizService {
         }
 
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<Integer> calculateScore(int id, List<QuizResponse> quizResponse) {
+        int score = 0;
+        try{
+            Quiz quiz = quizRepository.findById(id).get();
+            List<Question> questions = quiz.getQuestions();
+            int idx = 0;
+            for(QuizResponse res: quizResponse )
+            {
+                if(res.getResponse().equals(questions.get(idx).getRight_answer())) {
+                    score++;
+                }
+                idx++;
+            }
+            return new ResponseEntity<>(score,HttpStatus.OK);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(score,HttpStatus.BAD_REQUEST);
     }
 }
