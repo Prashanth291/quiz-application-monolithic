@@ -1,5 +1,12 @@
 # Quiz Application — Monolith
 
+![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1-6DB33F?logo=springboot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.9+-C71A36?logo=apachemaven&logoColor=white)
+![Hibernate](https://img.shields.io/badge/Hibernate-JPA-59666C?logo=hibernate&logoColor=white)
+![REST API](https://img.shields.io/badge/REST-API-009688)
+
 A backend quiz management system built with Spring Boot, following a monolithic architecture. The application handles question management, quiz creation, and quiz evaluation through a layered REST API backed by a PostgreSQL database.
 
 This is the initial single-deployable version of the project. A refactored microservices version is available [here](https://github.com/Prashanth291/quiz-application-microservice).
